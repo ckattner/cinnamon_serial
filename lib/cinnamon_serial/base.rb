@@ -20,12 +20,13 @@ module CinnamonSerial
 
     attr_reader :data,
                 :obj,
-                :opts
+                :opts,
+                :klasses
 
     def initialize(obj, opts = {}, klasses = Set.new)
       @obj     = obj
       @opts    = opts || {}
-      @klasses = klasses + Set[self.class.to_s]
+      @klasses = klasses
 
       materialize_data
       execute_hydrate_blocks

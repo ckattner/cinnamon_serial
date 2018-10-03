@@ -7,7 +7,59 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-Employee = Struct.new(:id, :name, :start_date, :job, :manager)
+class Employee
+  attr_accessor :id,
+                :name,
+                :start_date,
+                :job,
+                :account,
+                :progress,
+                :manager,
+                :employees
+
+  def initialize(
+    id:,
+    name:,
+    start_date:,
+    job:,
+    account:,
+    progress:,
+    manager: nil,
+    employees: []
+  )
+    @id         = id
+    @name       = name
+    @start_date = start_date
+    @job        = job
+    @account    = account
+    @progress   = progress
+    @manager    = manager
+    @employees  = employees
+  end
+
+  def true_alias_value
+    true
+  end
+  alias true_value true_alias_value
+
+  def false_alias_value
+    false
+  end
+  alias false_value false_alias_value
+
+  def null
+    nil
+  end
+
+  def blank
+    ''
+  end
+
+  def present
+    'abc123.'
+  end
+
+end
 
 # ######################################################
 # A Class that exemplifies all possible mapping options.
@@ -43,21 +95,35 @@ class EmployeeListSerializer < CinnamonSerial::Base
 
   # Test 'true' alias
 
-  #serialize :true_value, true: 'I am true.'
+  # <b>DEPRECATED:</b> Please use <tt>true_alias</tt> instead.
+  serialize :true_value,        true: 'I am true.'
+  serialize :true_alias_value,  true_alias: 'I am true alias.'
 
   # Test 'false' alias
 
+  # <b>DEPRECATED:</b> Please use <tt>false_alias</tt> instead.
+  serialize :false_value,       false: 'I am false.'
+  serialize :false_alias_value, false_alias: 'I am false alias.'
+
   # Test 'null' alias
+  serialize :null,              null: 'I am null.'
 
   # Test 'present' alias
+  serialize :present,           present: 'I am present.'
 
   # Test 'blank' alias
+  serialize :blank,             blank: 'I am blank.'
 
   # Test 'as' conversion
+  serialize :manager,           as: 'EmployeeSerializer'
+  serialize :employees,         as: 'EmployeeSerializer'
 
   # ################
   # Value Formatting
   # ################
+
+  serialize :account,           mask: true
+  serialize :progress,          percent: true
 
   # #######################
   # Manual Hydration Blocks

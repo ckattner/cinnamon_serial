@@ -18,13 +18,27 @@ module CinnamonSerial
       # - ABCDEFG     becomes: XXXDEFG
       def mask(value, keep_last = 4, mask_with = 'X')
         string_value = value.to_s
-        return string_value if string_value.blank? || string_value.size <= keep_last
+        return string_value if blank?(string_value) || string_value.size <= keep_last
 
         (mask_with.to_s * (string_value.size - keep_last)) + string_value[-keep_last..-1]
       end
 
       def percent(num)
-        num.present? ? format('%.2f %', num) : ''
+        present?(num) ? format('%.2f %', num) : ''
+      end
+
+      def present?(value)
+        !blank?(value)
+      end
+
+      def blank?(value)
+        if value.respond_to?(:blank?)
+          value.blank?
+        elsif value.respond_to?(:empty?)
+          !!value.empty?
+        else
+          !value
+        end
       end
     end
   end

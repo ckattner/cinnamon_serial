@@ -12,7 +12,9 @@ module CinnamonSerial
   class Resolver
     attr_accessor :as,
                   :blank,
+                  # <b>DEPRECATED:</b> Please use <tt>false_alias</tt> instead.
                   :false,
+                  :false_alias,
                   :for,
                   :manual,
                   :mask,
@@ -24,7 +26,9 @@ module CinnamonSerial
                   :present,
                   :through,
                   :transform,
-                  :true
+                  # <b>DEPRECATED:</b> Please use <tt>true_alias</tt> instead.
+                  :true,
+                  :true_alias
 
     def initialize(options = {})
       @option_keys = options.keys.map(&:to_s).to_set
@@ -79,21 +83,27 @@ module CinnamonSerial
 
     def resolve_transform(presenter, key, value)
       return presenter.send(key, value)       if transform.is_a?(TrueClass)
-      return presenter.send(transform, value) if transform.to_s.length.positive?
+      return presenter.send(transform, value) if Formatting.present?(transform)
 
       value
     end
 
     def resolve_alias(value)
-      if @option_keys.include?('true') && value.is_a?(TrueClass)
+      if @option_keys.include?('true_alias') && value.is_a?(TrueClass)
+        true_alias
+      # <b>DEPRECATED:</b> Please use <tt>true_alias</tt> instead.
+      elsif @option_keys.include?('true') && value.is_a?(TrueClass)
         self.true
+      elsif @option_keys.include?('false_alias') && value.is_a?(FalseClass)
+        false_alias
+      # <b>DEPRECATED:</b> Please use <tt>false_alias</tt> instead.
       elsif @option_keys.include?('false') && value.is_a?(FalseClass)
         self.false
       elsif @option_keys.include?('null') && value.nil?
         null
-      elsif @option_keys.include?('blank') && value.blank?
+      elsif @option_keys.include?('blank') && Formatting.blank?(value)
         blank
-      elsif @option_keys.include?('present') && value.present?
+      elsif @option_keys.include?('present') && Formatting.present?(value)
         present
       else
         value
@@ -112,19 +122,52 @@ module CinnamonSerial
       return value  unless as
       return nil    unless value
 
-      klass = as.to_s.classify.constantize
+      class_constant = as_class_constant
 
-      # cycle buster 2000
-      return nil if @klasses.include?(klass.to_s)
+      # If we already serialized this type, lets not do it again.
+      # This will prevent endless cycles / loops.
+      return nil if presenter.klasses.include?(class_constant.to_s)
 
+      # We do not want to create a hard dependency on ActiveRecord/Rails in this gem,
+      # but we can still create a soft dependency in case it was included as a peer.
       value = value.to_a if value.class.name == 'ActiveRecord::Relation'
 
-      new_klasses = @klasses + Set[klass.to_s]
+      new_klasses = presenter.klasses + Set[class_constant.to_s]
 
       if value.is_a?(Array)
-        value.map { |v| klass.new(v, presenter.opts, new_klasses) }
+        value.map { |v| class_constant.new(v, presenter.opts, new_klasses) }
       else
-        klass.new(value, presenter.opts, new_klasses)
+        class_constant.new(value, presenter.opts, new_klasses)
+      end
+    end
+
+    def as_class_name
+      return nil unless as
+
+      non_constant_types = %w[String Symbol]
+
+      # If we have a peer dependency for ActiveSupport then lets use it.
+      if non_constant_types.include?(as.class.name) && as.to_s.respond_to?(:classify)
+        as.to_s.classify
+      elsif non_constant_types.include?(as.class.name)
+        as.to_s
+      else
+        as
+      end
+    end
+
+    def as_class_constant
+      return nil unless as
+
+      class_name = as_class_name
+
+      # If we have a peer dependency for ActiveSupport then lets use it.
+      if class_name.is_a?(String) && class_name.respond_to?(:constantize)
+        class_name.constantize
+      elsif class_name.is_a?(String)
+        Object.const_get(class_name)
+      else
+        class_name
       end
     end
   end
