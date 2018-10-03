@@ -22,7 +22,6 @@ module CinnamonSerial
                   :null,
                   :percent,
                   :present,
-                  :safe,
                   :through,
                   :transform,
                   :true
@@ -44,9 +43,9 @@ module CinnamonSerial
 
       # Get the value
       value = resolve_value(presenter, key)
-      value = resolve_transform(presenter, value)
 
       # Transform the value
+      value = resolve_transform(presenter, key, value)
       value = resolve_alias(value)
       value = resolve_as(presenter, value)
 
@@ -60,7 +59,10 @@ module CinnamonSerial
     # (method) and (for/through) are mutually exlusive use-cases.
     # Example: you would never use for and method.
     def resolve_value(presenter, key)
-      return presenter.send(method) if method
+      # If you pass in something that is not true boolean value then use that as a method name
+      # to call on the presenter.
+      return presenter.send(key)    if method.is_a?(TrueClass)
+      return presenter.send(method) if method.to_s.length.positive?
 
       # User for/through
       model_key = self.for || key
@@ -75,8 +77,11 @@ module CinnamonSerial
       model&.respond_to?(model_key) ? model.send(model_key) : nil
     end
 
-    def resolve_transform(presenter, value)
-      transform ? presenter.send(transform, value) : value
+    def resolve_transform(presenter, key, value)
+      return presenter.send(key, value)       if transform.is_a?(TrueClass)
+      return presenter.send(transform, value) if transform.to_s.length.positive?
+
+      value
     end
 
     def resolve_alias(value)
