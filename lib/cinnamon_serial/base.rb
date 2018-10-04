@@ -69,6 +69,10 @@ module CinnamonSerial
     def materialize_data
       @data = {}
 
+      # Soft dependency on ActiveSupport.
+      # If it is understood how to create indifferently accessible hashes, then let's prefer that.
+      @data = @data.with_indifferent_access if @data.respond_to?(:with_indifferent_access)
+
       inherited_cinnamon_serial_specification.attribute_map.each do |key, options|
         @data[key.to_s] = options.resolve(self, key)
       end
