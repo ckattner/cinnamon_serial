@@ -24,9 +24,7 @@ describe CinnamonSerial::Dsl do
       manager_name
       renewal_date
       notify_date
-      true_value
       true_alias_value
-      false_value
       false_alias_value
       null
       present

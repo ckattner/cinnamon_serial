@@ -93,15 +93,9 @@ class EmployeeListSerializer < CinnamonSerial::Base
   serialize :notify_date,   for: :start_date, transform: :notification_date
 
   # Test 'true' alias
-
-  # <b>DEPRECATED:</b> Please use <tt>true_alias</tt> instead.
-  serialize :true_value,        true: 'I am true.'
   serialize :true_alias_value,  true_alias: 'I am true alias.'
 
   # Test 'false' alias
-
-  # <b>DEPRECATED:</b> Please use <tt>false_alias</tt> instead.
-  serialize :false_value,       false: 'I am false.'
   serialize :false_alias_value, false_alias: 'I am false alias.'
 
   # Test 'null' alias
@@ -160,10 +154,10 @@ end
 # Subclass to test inheritance.
 # #############################
 class EmployeeSerializer < EmployeeListSerializer
-  present :start_date, :job
+  serialize :start_date, :job
 
-  present :founder,
-          :owner, manual: true
+  serialize :founder,
+            :owner, manual: true
 
   hydrate do
     set_founder(obj.id < 10)

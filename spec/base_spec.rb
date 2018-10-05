@@ -24,9 +24,7 @@ describe CinnamonSerial::Base do
       manager_name
       renewal_date
       notify_date
-      true_value
       true_alias_value
-      false_value
       false_alias_value
       null
       present
@@ -96,9 +94,7 @@ describe CinnamonSerial::Base do
     expect(data['renewal_date']).to eq(matt.start_date + (60 * 60 * 24 * 24))
     expect(data['notify_date']).to  eq(matt.start_date + (60 * 60 * 24 * 23))
 
-    expect(data['true_value']).to         eq('I am true.')
     expect(data['true_alias_value']).to   eq('I am true alias.')
-    expect(data['false_value']).to        eq('I am false.')
     expect(data['false_alias_value']).to  eq('I am false alias.')
     expect(data['null']).to               eq('I am null.')
     expect(data['present']).to            eq('I am present.')

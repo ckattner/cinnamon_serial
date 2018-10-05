@@ -19,8 +19,6 @@ module CinnamonSerial
 
       nil
     end
-    # <b>DEPRECATED:</b> Please use <tt>serialize</tt> instead.
-    alias present serialize
 
     def hydrate(&block)
       cinnamon_serial_specification.hydrate(block)

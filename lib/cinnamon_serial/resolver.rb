@@ -12,8 +12,6 @@ module CinnamonSerial
   class Resolver
     attr_accessor :as,
                   :blank,
-                  # <b>DEPRECATED:</b> Please use <tt>false_alias</tt> instead.
-                  :false,
                   :false_alias,
                   :for,
                   :manual,
@@ -26,8 +24,6 @@ module CinnamonSerial
                   :present,
                   :through,
                   :transform,
-                  # <b>DEPRECATED:</b> Please use <tt>true_alias</tt> instead.
-                  :true,
                   :true_alias
 
     def initialize(options = {})
@@ -91,14 +87,8 @@ module CinnamonSerial
     def resolve_alias(value)
       if @option_keys.include?('true_alias') && value.is_a?(TrueClass)
         true_alias
-      # <b>DEPRECATED:</b> Please use <tt>true_alias</tt> instead.
-      elsif @option_keys.include?('true') && value.is_a?(TrueClass)
-        self.true
       elsif @option_keys.include?('false_alias') && value.is_a?(FalseClass)
         false_alias
-      # <b>DEPRECATED:</b> Please use <tt>false_alias</tt> instead.
-      elsif @option_keys.include?('false') && value.is_a?(FalseClass)
-        self.false
       elsif @option_keys.include?('null') && value.nil?
         null
       elsif @option_keys.include?('blank') && Formatting.blank?(value)
