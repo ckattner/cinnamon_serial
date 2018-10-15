@@ -167,3 +167,7 @@ class EmployeeSerializer < EmployeeListSerializer
     set_owner(obj.id == 1)
   end
 end
+
+class SimpleEmployeeSerializer < CinnamonSerial::Base
+  serialize :id, :name
+end

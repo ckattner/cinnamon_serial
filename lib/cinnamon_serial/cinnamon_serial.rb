@@ -8,6 +8,7 @@
 #
 
 require 'set'
+require 'ostruct'
 
 require_relative 'formatting'
 require_relative 'resolver'

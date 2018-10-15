@@ -24,7 +24,7 @@ module CinnamonSerial
                 :klasses
 
     def initialize(obj, opts = {}, klasses = Set.new)
-      @obj     = obj
+      @obj     = normalize_object(obj)
       @opts    = opts || {}
       @klasses = klasses
 
@@ -90,6 +90,13 @@ module CinnamonSerial
       end
 
       nil
+    end
+
+    # We would like to support hashes, but would rather stay object-based.  So what we
+    # can do is just simply convert hashes to OpenStruct objects so they behave more like
+    # objects.
+    def normalize_object(obj)
+      obj.is_a?(Hash) ? OpenStruct.new(obj) : obj
     end
   end
 end

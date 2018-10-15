@@ -116,4 +116,16 @@ describe CinnamonSerial::Base do
   it 'should not create cycles when flattening out presenters' do
     expect(data['manager'].employees).to be nil
   end
+
+  it 'should treat hashes like objects' do
+    employee = {
+      id: 1,
+      name: 'Mittens the cat'
+    }
+
+    serializer = SimpleEmployeeSerializer.new(employee)
+
+    expect(serializer.data['id']).to    eq(employee[:id])
+    expect(serializer.data['name']).to  eq(employee[:name])
+  end
 end
