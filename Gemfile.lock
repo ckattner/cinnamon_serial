@@ -48,8 +48,8 @@ PLATFORMS
 
 DEPENDENCIES
   cinnamon_serial!
-  pry (~> 0.11.3)
-  rspec (~> 3.8.0)
+  pry (~> 0.11)
+  rspec (~> 3.8)
   rubocop (~> 0.59.2)
 
 BUNDLED WITH

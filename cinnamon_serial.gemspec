@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.3.1'
 
-  s.add_development_dependency('pry', '~> 0.11.3')
-  s.add_development_dependency('rspec', '~> 3.8.0')
+  s.add_development_dependency('pry', '~> 0.11')
+  s.add_development_dependency('rspec', '~> 3.8')
   s.add_development_dependency('rubocop', '~> 0.59.2')
 end
