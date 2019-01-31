@@ -24,7 +24,7 @@ module CinnamonSerial
       end
 
       def percent(num)
-        present?(num) ? format('%.2f %', num) : ''
+        present?(num) ? format('%.2f %%', num) : ''
       end
 
       def present?(value)
