@@ -7,9 +7,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-require 'date'
-require 'pry'
-require './lib/cinnamon_serial'
+require './spec/spec_helper'
 require './spec/examples'
 
 describe CinnamonSerial::Base do

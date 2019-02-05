@@ -7,10 +7,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-require 'date'
-require 'pry'
-require './lib/cinnamon_serial'
-require './spec/examples'
+require './spec/spec_helper'
 
 describe CinnamonSerial::Dsl do
   let(:employee_list_keys) do

@@ -1,6 +1,6 @@
 # Cinnamon Serial
 
-[![Build Status](https://travis-ci.org/bluemarblepayroll/cinnamon_serial.svg?branch=master)](https://travis-ci.org/bluemarblepayroll/cinnamon_serial)
+[![Gem Version](https://badge.fury.io/rb/cinnamon_serial.svg)](https://badge.fury.io/rb/cinnamon_serial) [![Build Status](https://travis-ci.org/bluemarblepayroll/cinnamon_serial.svg?branch=master)](https://travis-ci.org/bluemarblepayroll/cinnamon_serial)  [![Maintainability](https://api.codeclimate.com/v1/badges/0e4c93d2bde984836e97/maintainability)](https://codeclimate.com/github/bluemarblepayroll/cinnamon_serial/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/0e4c93d2bde984836e97/test_coverage)](https://codeclimate.com/github/bluemarblepayroll/cinnamon_serial/test_coverage) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A common issue is that we typically want different data going
 outbound than what we have available server-side.  Some example motivations could be:
