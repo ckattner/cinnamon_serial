@@ -40,7 +40,7 @@ module CinnamonSerial
       data
     end
 
-    def respond_to_missing?(method_sym)
+    def respond_to_missing?(method_sym, include_private = false)
       data.key?(method_sym.to_s) || super
     end
 

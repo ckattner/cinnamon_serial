@@ -118,16 +118,24 @@ module CinnamonSerial
       # This will prevent endless cycles / loops.
       return nil if presenter.klasses.include?(class_constant.to_s)
 
-      # We do not want to create a hard dependency on ActiveRecord/Rails in this gem,
-      # but we can still create a soft dependency in case it was included as a peer.
-      value = value.to_a if value.class.name == 'ActiveRecord::Relation'
-
       new_klasses = presenter.klasses + Set[class_constant.to_s]
+
+      value = value_to_array_or_scalar(value)
 
       if value.is_a?(Array)
         value.map { |v| class_constant.new(v, presenter.opts, new_klasses) }
       else
         class_constant.new(value, presenter.opts, new_klasses)
+      end
+    end
+
+    def value_to_array_or_scalar(value)
+      # We do not want to create a hard dependency on ActiveRecord/Rails in this gem,
+      # but we can still create a soft dependency in case it was included as a peer.
+      if Module.const_defined?('ActiveRecord') && value.is_a?(ActiveRecord::Relation)
+        value.to_a
+      else
+        value
       end
     end
 
