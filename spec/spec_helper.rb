@@ -9,13 +9,14 @@
 
 require 'date'
 require 'pry'
+require 'pry-byebug'
 
 unless ENV['DISABLE_SIMPLECOV'] == 'true'
   require 'simplecov'
   require 'simplecov-console'
 
   SimpleCov.formatter = SimpleCov::Formatter::Console
-  SimpleCov.start  do
+  SimpleCov.start do
     add_filter %r{\A/spec/}
   end
 end
