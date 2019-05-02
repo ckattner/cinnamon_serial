@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-guard :rspec, cmd: 'bundle exec rspec' do
+guard :rspec, cmd: 'DISABLE_SIMPLECOV=true bundle exec rspec --format=documentation' do
   require 'guard/rspec/dsl'
   dsl = Guard::RSpec::Dsl.new(self)
 

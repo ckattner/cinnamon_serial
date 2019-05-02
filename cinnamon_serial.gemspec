@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.3.8'
 
   s.add_development_dependency('guard-rspec', '~>4.7')
+  s.add_development_dependency('pry')
+  s.add_development_dependency('pry-byebug', '~> 3')
   s.add_development_dependency('rspec', '~> 3.8')
   s.add_development_dependency('rubocop', '~>0.63.1')
   s.add_development_dependency('simplecov', '~>0.16.1')
